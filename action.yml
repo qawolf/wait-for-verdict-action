@@ -1,0 +1,42 @@
+name: "Wait for QA Wolf verdict"
+description: "Waits until QA Wolf has tested a deployment, then passes or fails the step on the result, so a later job can gate a release on it"
+branding:
+  icon: "check-circle"
+  color: "purple"
+inputs:
+  qawolf-api-key:
+    description: "QA Wolf API key. You can find it in the application workspace settings page."
+    required: true
+  deployment-id:
+    description: "The id of the QA Wolf deployment to wait on: the deployment-id output of qawolf/notify-qawolf-on-deploy-action, or the deployment id that deployment.reportStatus of @qawolf/ci-sdk returned. Not the deployment-id input you may pass to the notify action."
+    required: true
+  timeout:
+    description: "How long to wait in total, such as 2h, 90m or 5400s. Keep it below the job's timeout-minutes, so the step ends with run links instead of being killed."
+    required: false
+    default: "2h"
+  on-not-tested:
+    description: "What the step does when nothing tested the deployment, because no trigger matched it or a matching trigger started no run: pass or fail."
+    required: false
+    default: "fail"
+  on-superseded:
+    description: "What the step does when a newer deployment replaced the run before it finished, so this deployment has no verdict: pass or fail. Use pass only for a status check, never when a later job ships this commit."
+    required: false
+    default: "fail"
+  on-needs-review:
+    description: "What the step does when the run's failures wait for a person on the run page: fail, or wait until someone answers and the run settles, within timeout."
+    required: false
+    default: "fail"
+  qawolf-base-url:
+    description: "The base URL of the QA Wolf API."
+    required: false
+    default: "https://app.qawolf.com"
+outputs:
+  outcome:
+    description: "The verdict's outcome, such as passed, failed, not-tested, superseded, needs-review or timed-out. Set whenever the action asked QA Wolf for the verdict, even when the step fails. Empty when an input is invalid or the action hits an internal error, and the step then fails."
+  run-urls:
+    description: "The URLs of the runs QA Wolf started for the deployment, one per line. Empty when there are none."
+  verdict:
+    description: "The full verdict as JSON. Read any field with fromJSON."
+runs:
+  using: "node24"
+  main: "dist/index.js"

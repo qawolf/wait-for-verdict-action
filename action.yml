@@ -1,5 +1,5 @@
 name: "Wait for QA Wolf verdict"
-description: "Waits until QA Wolf has tested a deployment, then passes or fails the step on the result, so a later job can gate a release on it"
+description: "Waits until QA Wolf has tested a deployment, then passes or fails the step on the result"
 branding:
   icon: "check-circle"
   color: "purple"

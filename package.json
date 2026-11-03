@@ -1,6 +1,6 @@
 {
   "name": "@qawolf/wait-for-verdict-action",
-  "version": "v1.0.0",
+  "version": "v1.0.2",
   "private": false,
   "type": "module",
   "sideEffects": false,

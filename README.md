@@ -29,6 +29,7 @@ jobs:
         uses: qawolf/notify-qawolf-on-deploy-action@v3
         with:
           qawolf-api-key: ${{ secrets.QAWOLF_API_KEY }}
+          workspace-id: "your-workspace-id"
           environment: staging
           deployment-url: https://staging.example.com
 
